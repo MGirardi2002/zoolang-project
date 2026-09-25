@@ -1,0 +1,16 @@
+~ 01_valido_basico: declaração, atribuição e saída ~
+
+ENTRAR_NA_JAULA
+    cobra atleta = "Bambam"
+    carneirinho idade = 35
+    camaleao peso_supino = 120.5
+    vagalume ta_saindo_da_cadeia = vivo
+
+    idade = idade + 1
+    peso_supino = peso_supino + 2.5
+
+    rugir("QUE SEANRA EH ESSA?! AQUI EH ZOOLANG!")
+    rugir(atleta)
+    rugir(idade)
+    rugir(peso_supino)
+SAIR_DA_JAULA

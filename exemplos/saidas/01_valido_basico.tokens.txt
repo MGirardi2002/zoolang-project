@@ -1,0 +1,48 @@
+LINHA:COL  TOKEN                LEXEMA
+--------------------------------------------------
+3:1        ENTRAR_NA_JAULA      ENTRAR_NA_JAULA
+4:5        COBRA                cobra
+4:11       ID                   atleta
+4:18       ATRIB                =
+4:20       STRING               "Bambam"
+5:5        CARNEIRINHO          carneirinho
+5:17       ID                   idade
+5:23       ATRIB                =
+5:25       NUM_INT              35
+6:5        CAMALEAO             camaleao
+6:14       ID                   peso_supino
+6:26       ATRIB                =
+6:28       NUM_REAL             120.5
+7:5        VAGALUME             vagalume
+7:14       ID                   ta_saindo_da_cadeia
+7:34       ATRIB                =
+7:36       VIVO                 vivo
+9:5        ID                   idade
+9:11       ATRIB                =
+9:13       ID                   idade
+9:19       MAIS                 +
+9:21       NUM_INT              1
+10:5       ID                   peso_supino
+10:17      ATRIB                =
+10:19      ID                   peso_supino
+10:31      MAIS                 +
+10:33      NUM_REAL             2.5
+12:5       RUGIR                rugir
+12:10      ABRE_PAR             (
+12:11      STRING               "QUE SEANRA EH ESSA?! AQUI EH ZOOLANG!"
+12:50      FECHA_PAR            )
+13:5       RUGIR                rugir
+13:10      ABRE_PAR             (
+13:11      ID                   atleta
+13:17      FECHA_PAR            )
+14:5       RUGIR                rugir
+14:10      ABRE_PAR             (
+14:11      ID                   idade
+14:16      FECHA_PAR            )
+15:5       RUGIR                rugir
+15:10      ABRE_PAR             (
+15:11      ID                   peso_supino
+15:22      FECHA_PAR            )
+16:1       SAIR_DA_JAULA        SAIR_DA_JAULA
+17:1       EOF                  
+Análise léxica concluída: 45 tokens reconhecidos (incluindo EOF).

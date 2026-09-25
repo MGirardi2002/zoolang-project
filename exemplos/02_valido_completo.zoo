@@ -1,0 +1,48 @@
+~ ==================================================
+  02_valido_completo: condicional, repetição,
+  entrada/saída e expressões com precedência
+  ================================================== ~
+
+gato math
+
+ENTRAR_NA_JAULA
+    fossil carneirinho META = 100
+    carneirinho carga
+    carneirinho serie = 1
+    camaleao volume = 0.0
+    carneirinho resultado
+
+    ~ precedência: 2 + (3 * 4) = 14 e (2 + 3) * 4 = 20 ~
+    resultado = 2 + 3 * 4
+    rugir(resultado)
+    resultado = (2 + 3) * 4
+    rugir(resultado)
+
+    rugir("Qual a carga no supino?")
+    capturar(carga)
+
+    se_tem_bicho (carga >= META) {
+        rugir("BATEU A META! MONSTRO!")
+    } Se_for_outro_bixo (carga >= 50) {
+        rugir("Ta no caminho certo, vai subir o peso!")
+    } nao_tem_bicho {
+        rugir("Carga de frango!")
+    }
+
+    contar_carneirinho (serie <= 3) {
+        volume = volume + carga * 1.5
+        rugir("Serie " + serie + " concluida!")
+        serie = serie + 1
+    }
+
+    migrar (carneirinho i = 10; i > 0; i = i - 1) {
+        se_tem_bicho (i == 5) {
+            rugir("Cansou! Foge do loop!")
+            fugir
+        }
+        rugir(i)
+    }
+
+    rugir("Volume total: " + volume)
+    rugir("TREINO FINALIZADO!")
+SAIR_DA_JAULA

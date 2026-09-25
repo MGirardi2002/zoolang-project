@@ -1,0 +1,1 @@
+exemplos/03_erro_lexico.zoo: Erro léxico [linha 5, coluna 19]: símbolo '@' não pertence ao alfabeto da ZooLang

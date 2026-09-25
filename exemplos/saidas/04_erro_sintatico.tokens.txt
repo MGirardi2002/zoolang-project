@@ -1,0 +1,13 @@
+LINHA:COL  TOKEN                LEXEMA
+--------------------------------------------------
+4:1        ENTRAR_NA_JAULA      ENTRAR_NA_JAULA
+5:5        CARNEIRINHO          carneirinho
+5:17       ID                   carga
+5:23       ATRIB                =
+6:5        RUGIR                rugir
+6:10       ABRE_PAR             (
+6:11       ID                   carga
+6:16       FECHA_PAR            )
+7:1        SAIR_DA_JAULA        SAIR_DA_JAULA
+8:1        EOF                  
+Análise léxica concluída: 10 tokens reconhecidos (incluindo EOF).

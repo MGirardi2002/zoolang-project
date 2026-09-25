@@ -1,0 +1,7 @@
+~ 04_erro_sintatico: declaração termina sem expressão após '=' ~
+~ (léxico válido; o erro deve ser apontado pelo parser)         ~
+
+ENTRAR_NA_JAULA
+    carneirinho carga =
+    rugir(carga)
+SAIR_DA_JAULA

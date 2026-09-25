@@ -1,0 +1,9 @@
+~ 05_erro_semantico: atribuição a variável não declarada ~
+~ (léxico e sintaxe válidos; o erro deve ser apontado     ~
+~  pela análise semântica)                                ~
+
+ENTRAR_NA_JAULA
+    carneirinho carga = 100
+    peso = carga * 2
+    rugir(peso)
+SAIR_DA_JAULA

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# Node (para gerar o relatório)
+node_modules/
+package-lock.json
+
+# Binários gerados ao compilar o C
+*.exe
+*.o
+a.out
+
+# Ferramentas locais
+.markdown-collab/
+
+# Arquivos pessoais
+status.txt
+docs/fonte/gerar_relatorio.js
+
+# Documentos não essenciais
+_Trabalho_Pratico_1_Linguagem_Tematica_v6.pdf
