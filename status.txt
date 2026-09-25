@@ -1,0 +1,119 @@
+ZOOLANG — STATUS DO PROJETO
+============================
+Última atualização: 24/09/2026 (tarefas planejadas para 25/09/2026)
+Trabalho Prático 1 — Linguagens Formais e Compiladores (UNIJUÍ, prof. Marcos Ronaldo Melo Cavalheiro)
+Grupo: Matheus Girardi, Maiara Zucco, Anderson Scholz, Gustavo Drews
+Enunciado: _Trabalho_Pratico_1_Linguagem_Tematica_v6.pdf | Proposta do grupo: ZooLang.pdf
+
+
+DECISÕES FIXADAS
+----------------
+- Transpilador em Python 3 (só biblioteca padrão). Linguagem destino: C.
+- Relatório em Word (.docx), gerado por script Node (docs/fonte/gerar_relatorio.js).
+- Escopo: núcleo + extras simples.
+    Na gramática: ENTRAR_NA_JAULA/SAIR_DA_JAULA, gato, carneirinho(int), camaleao(double),
+    cobra(string), vagalume(bool), fossil(const), vivo/morto, rugir, capturar,
+    se_tem_bicho / Se_for_outro_bixo / nao_tem_bicho, contar_carneirinho(while),
+    migrar(for), fugir(break).
+    Só reservadas (o lexer reconhece, o parser deve rejeitar): alcateia, habitat, zebra,
+    se_der_zebra, abater, bicho_solto, CHEGOU_O_ZELADOR, hakuna_matata.
+- Comandos SEM ';' (quebra de linha = espaço). ';' só no cabeçalho de migrar( ; ; ).
+- Blocos com { }. Comentários ~ ... ~ (podem ocupar várias linhas).
+- rugir(expr) quebra a linha automaticamente. Concatenação com + e cobra só dentro de rugir.
+- Palavras-chave diferenciam maiúsculas (Se_for_outro_bixo mantido como o grupo escreveu).
+- Parar no primeiro erro em todas as fases; saída com código 1.
+- Pendentes de confirmação pelo grupo: rugir com quebra automática; camaleao -> double;
+  bicho_solto = null (NADA descartado); cidade na capa do relatório.
+
+
+FEITO (Marcos 1–3 + analisador léxico)
+--------------------------------------
+[x] zoolang/tokens.py   TokenType, PALAVRAS_RESERVADAS, RESERVADAS_FUTURAS, SIMBOLOS_DUPLOS/SIMPLES, Token
+[x] zoolang/erros.py    ZooLangError -> ErroLexico (formato: "Erro léxico [linha L, coluna C]: ...")
+[x] zoolang/lexer.py    scanner manual, maior casamento, linha/coluna, erros léxicos
+[x] zooc.py             CLI: python zooc.py arq.zoo [--tokens]
+[x] tests/test_lexer.py 36 testes (python -m unittest discover -s tests -v) — todos passando
+[x] exemplos/01..05     suíte obrigatória (.zoo) + exemplos/saidas/*.tokens.txt
+[x] README.md           pré-requisitos, uso, estado das etapas
+[x] docs/Relatorio_Tecnico_ZooLang.docx — versão parcial com: tema, objetivos, 6 decisões de
+    projeto (D1–D6), alfabeto, definições regulares, tabelas de tokens, AFD dos números,
+    erros léxicos, G=(V,T,P,S) + EBNF (PROPOSTA, ainda não validada por um parser), precedência,
+    FIRST/LL(1), regras semânticas R1–R11, mapeamento para C, arquitetura, suíte de testes,
+    revisão integradora da etapa 1, uso de IA, referências.
+
+
+FALTA FAZER
+===========
+
+MARCO 4 — Parser + AST + erros sintáticos
+------------------------------------------
+[ ] zoolang/ast.py: nós da AST (dataclasses), por exemplo:
+      Programa(imports, corpo), Importacao(lib), Declaracao(tipo, nome, const, expr),
+      Atribuicao(nome, expr), Leitura(nome), Escrita(expr), Se(ramos[(cond, bloco)], senao),
+      Enquanto(cond, bloco), Para(init, cond, passo, bloco), Fugir(),
+      BinOp(op, esq, dir), Unario(op, expr), Literal(tipo, valor), Var(nome), Bloco(instrucoes).
+    Cada nó guarda a linha (para as mensagens semânticas).
+[ ] zoolang/parser.py: descida recursiva seguindo a EBNF da seção 5.2 do relatório
+    (um método por não terminal: programa, instrucao, declaracao, ..., expressao, expr_aritmetica, termo, fator).
+[ ] ErroSintatico em erros.py: "Erro sintático [linha L, coluna C]: esperado <X>, encontrado '<lexema>'".
+[ ] Rejeitar as reservadas futuras com "recurso reservado, não suportado nesta versão".
+[ ] CLI: opção --ast (imprimir a árvore indentada), útil na demonstração.
+[ ] tests/test_parser.py: precedência (2+3*4 => Soma(2, Mult(3,4)); (2+3)*4), else-if encadeado,
+    migrar, erros sintáticos (04_erro_sintatico deve falhar: "esperado expressão, encontrado 'rugir'").
+[ ] Validar a gramática; se mudar, atualizar a seção 5 do relatório (e V/T).
+
+MARCO 5 — Semântica + geração de C + entrega
+--------------------------------------------
+[ ] zoolang/semantico.py: tabela de símbolos (nome, tipo, const, linha) com pilha de escopos
+    (programa, cada Bloco, cabeçalho de migrar); anotar o tipo de cada expressão.
+    Regras R1–R11 (seção 6 do relatório): declarar antes de usar; sem duplicata no mesmo escopo;
+    compatibilidade (int->double ok; double->int, string<->número, bool<->número proibidos);
+    aritmética só numérica; concatenação só em rugir; relacionais -> vagalume; condição deve
+    ser vagalume; fossil exige inicialização e não pode ser alvo de atribuição/capturar;
+    fugir só em laço; capturar não aceita vagalume; gato só com math/stdlib/string/time.
+[ ] ErroSemantico: "Erro semântico [linha L]: variável 'peso' usada sem declaração (regra: ...)".
+    05_erro_semantico deve falhar com isso.
+[ ] zoolang/gerador_c.py: percorrer a AST (não fazer substituição textual). Mapeamento:
+      carneirinho->int (%d), camaleao->double (printf %g / scanf %lf),
+      cobra->char x[256] (inicialização/atribuição com strcpy; scanf "%255s"),
+      vagalume->bool (#include <stdbool.h>; imprimir x ? "vivo" : "morto"), fossil->const,
+      gato math -> #include <math.h>; sempre #include <stdio.h> (+ string.h se usar cobra).
+      rugir com concatenação -> um único printf com os especificadores de cada parte + "\n".
+      Parênteses: gerar a partir da árvore, respeitando a precedência.
+[ ] CLI: pipeline completo; gravar arq.c (opção -o); opcionalmente --run (gcc + executar).
+[ ] Gerar exemplos/saidas/01_valido_basico.c e 02_valido_completo.c (entregável 4), compilar
+    com gcc e conferir a execução (02 usa capturar: testar com entrada, ex.: echo 120 | ./a.exe).
+[ ] Salvar a saída de erro de 04 e 05 em exemplos/saidas/.
+[ ] tests/test_semantico.py, tests/test_gerador.py (ponta a ponta: compilar o .c gerado com gcc).
+[ ] Script para rodar toda a suíte (ex.: rodar_testes.py ou .bat) e mostrar a saída de cada caso.
+
+RELATÓRIO / README (fechamento)
+-------------------------------
+[ ] Atualizar docs/fonte/gerar_relatorio.js e regenerar:
+    - seção 5: tirar o aviso de "proposta" depois de validar com o parser; explicar quais
+      produções reconhecem cada estrutura; exemplo de AST (árvore do 02 ou do exemplo 2+3*4);
+    - seção 6: marcar como implementada e colocar as mensagens reais;
+    - seção 7: tabela de módulos/estado; nova seção de geração de código com um .zoo ao lado do .c;
+    - seção 8: resultados reais dos 5 casos (incluindo os erros sintático e semântico);
+    - seção 10 (IA): o grupo completa com as ferramentas usadas;
+    - capa: cidade; remover "versão parcial".
+[ ] README: estado das etapas, exemplo de uso completo (zoo -> c -> gcc -> executar).
+
+APRESENTAÇÃO (Aula 18 — 15 pontos)
+----------------------------------
+[ ] Roteiro da demonstração: casos válidos -> .c -> execução; erros léxico/sintático/semântico.
+[ ] Todos os integrantes devem saber explicar: tokens/ER, produções da GLC, AST, tabela de
+    símbolos, geração de código (o professor pode pedir novos casos ou pequenas modificações).
+[ ] Opcional: slides.
+
+
+NOTAS DE AMBIENTE
+-----------------
+- Python 3.13; gcc em C:\MinGW\bin; Node 24.
+- O pacote npm "docx" NÃO está instalado no projeto (foi instalado só na pasta temporária
+  da sessão). Para regenerar o relatório: npm install docx && node docs/fonte/gerar_relatorio.js
+  (ou instalar numa pasta temporária e usar NODE_PATH, para não poluir o projeto).
+- Não há Word nem LibreOffice na máquina: dá para validar o .docx
+  (validate.py da skill docx), mas não renderizar para ver o visual.
+- O projeto não é um repositório git (considerar git init).
+- Arquivos .zoo em UTF-8 com quebras de linha LF.
