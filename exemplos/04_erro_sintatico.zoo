@@ -2,6 +2,6 @@
 ~ (léxico válido; o erro deve ser apontado pelo parser)         ~
 
 ENTRAR_NA_JAULA
-    carneirinho carga =
-    rugir(carga)
+    carneirinho leoes =
+    rugir(leoes)
 SAIR_DA_JAULA

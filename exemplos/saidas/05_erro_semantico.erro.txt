@@ -1,0 +1,1 @@
+exemplos/05_erro_semantico.zoo: Erro semântico [linha 7]: variável 'filhotes' usada sem declaração (regra R1: declarar antes de usar)

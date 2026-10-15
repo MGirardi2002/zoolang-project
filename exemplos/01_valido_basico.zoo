@@ -1,16 +1,17 @@
 ~ 01_valido_basico: declaração, atribuição e saída ~
 
 ENTRAR_NA_JAULA
-    cobra atleta = "Bambam"
-    carneirinho idade = 35
-    camaleao peso_supino = 120.5
-    vagalume ta_saindo_da_cadeia = vivo
+    cobra bicho = "Leao Simba"
+    carneirinho idade = 5
+    camaleao kg_de_carne = 12.5
+    vagalume ta_na_jaula = vivo
 
     idade = idade + 1
-    peso_supino = peso_supino + 2.5
+    kg_de_carne = kg_de_carne + 2.5
 
-    rugir("QUE SEANRA EH ESSA?! AQUI EH ZOOLANG!")
-    rugir(atleta)
+    rugir("ROARRR! BEM-VINDO AO ZOOLOGICO DA ZOOLANG!")
+    rugir(bicho)
     rugir(idade)
-    rugir(peso_supino)
+    rugir(kg_de_carne)
+    rugir(ta_na_jaula)
 SAIR_DA_JAULA

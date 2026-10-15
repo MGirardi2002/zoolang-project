@@ -1,0 +1,1 @@
+exemplos/04_erro_sintatico.zoo: Erro sintático [linha 6, coluna 5]: esperado expressão, encontrado 'rugir'

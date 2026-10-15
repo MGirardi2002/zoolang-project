@@ -1,7 +1,7 @@
 ~ 03_erro_lexico: o símbolo '@' não pertence ao alfabeto da ZooLang ~
 
 ENTRAR_NA_JAULA
-    carneirinho carga = 100
-    carga = carga @ 2
-    rugir(carga)
+    carneirinho leoes = 3
+    leoes = leoes @ 2
+    rugir(leoes)
 SAIR_DA_JAULA

@@ -58,8 +58,8 @@ class TestPalavrasEIdentificadores(unittest.TestCase):
         self.assertEqual(tipos("RUGIR Rugir se_for_outro_bixo"), [T.ID, T.ID, T.ID])
 
     def test_identificador_com_digitos_e_sublinhado(self):
-        toks = tokenizar("peso_supino2")
-        self.assertEqual((toks[0].tipo, toks[0].lexema), (T.ID, "peso_supino2"))
+        toks = tokenizar("peso_elefante2")
+        self.assertEqual((toks[0].tipo, toks[0].lexema), (T.ID, "peso_elefante2"))
 
 
 class TestNumeros(unittest.TestCase):
@@ -204,31 +204,32 @@ class TestProgramasDeExemplo(unittest.TestCase):
                 self.assertIs(tokenizar(ler_exemplo(nome))[-1].tipo, T.EOF)
 
     def test_exemplo_final_da_proposta_do_grupo(self):
-        # "Exemplo Completo Final" do documento ZooLang.pdf, restrito ao escopo atual
-        # (sem zebra/se_der_zebra/abater, que são reservadas).
+        # Estrutura do "Exemplo Completo Final" do documento ZooLang.pdf, restrita ao
+        # escopo atual (sem zebra/se_der_zebra/abater, que são reservadas), com os
+        # textos adaptados ao tema de zoológico.
         fonte = '''
         ~ PROGRAMA PRINCIPAL EM ZOOLANG ~
         gato math
         ENTRAR_NA_JAULA
-        cobra atleta = "Bambam"
-        fossil carneirinho META = 100
-        carneirinho carga
-        vagalume esta_pronto = vivo
-        rugir("Qual a carga no supino?")
-        capturar(carga)
-        se_tem_bicho (carga >= META) {
-           rugir(atleta + " BATEU A META DE " + META + "KG! MONSTRO!")
-        } Se_for_outro_bixo (carga >= 50) {
-           rugir("Ta no caminho certo, vai subir o peso!")
+        cobra tratador = "Seu Jorge"
+        fossil carneirinho LOTACAO = 100
+        carneirinho visitantes
+        vagalume portao_aberto = vivo
+        rugir("Quantos visitantes entraram no zoológico?")
+        capturar(visitantes)
+        se_tem_bicho (visitantes >= LOTACAO) {
+           rugir(tratador + " AVISA: LOTOU COM " + LOTACAO + " VISITANTES!")
+        } Se_for_outro_bixo (visitantes >= 50) {
+           rugir("Movimento bom, os macacos estão animados!")
         } nao_tem_bicho {
-           rugir("Carga de frango!")
+           rugir("Dia calmo, até a preguiça dormiu.")
         }
-        carneirinho serie = 1
-        contar_carneirinho (serie <= 3) {
-           rugir("Serie " + serie + " concluida!")
-           serie = serie + 1
+        carneirinho jaula = 1
+        contar_carneirinho (jaula <= 3) {
+           rugir("Jaula " + jaula + " alimentada!")
+           jaula = jaula + 1
         }
-        rugir("TREINO FINALIZADO! TÁ PAGO!")
+        rugir("ZOOLÓGICO FECHADO! HORA DE DORMIR!")
         SAIR_DA_JAULA
         '''
         toks = tokenizar(fonte)

@@ -1,6 +1,6 @@
 ZOOLANG — STATUS DO PROJETO
 ============================
-Última atualização: 24/09/2026 (tarefas planejadas para 25/09/2026)
+Última atualização: 15/10/2026 (código, testes e relatório finalizados; falta a apresentação)
 Trabalho Prático 1 — Linguagens Formais e Compiladores (UNIJUÍ, prof. Marcos Ronaldo Melo Cavalheiro)
 Grupo: Matheus Girardi, Maiara Zucco, Anderson Scholz, Gustavo Drews
 Enunciado: _Trabalho_Pratico_1_Linguagem_Tematica_v6.pdf | Proposta do grupo: ZooLang.pdf
@@ -42,62 +42,59 @@ FEITO (Marcos 1–3 + analisador léxico)
     revisão integradora da etapa 1, uso de IA, referências.
 
 
+FEITO EM 15/10/2026 (Marcos 4 e 5)
+----------------------------------
+[x] zoolang/ast.py        nós da AST (dataclasses, cada um com a linha) + formatar_ast (--ast) + expr_str
+[x] zoolang/parser.py     descida recursiva, um método por não terminal da EBNF 5.2.
+                          A gramática foi validada SEM mudanças (V/T/P da seção 5 continuam valendo).
+                          Extra: "a < b < c" dá erro próprio ("operadores relacionais não podem ser encadeados").
+[x] ErroSintatico         "Erro sintático [linha 6, coluna 5]: esperado expressão, encontrado 'rugir'"
+                          Reservadas futuras: "'zebra' é recurso reservado, não suportado nesta versão"
+[x] zoolang/semantico.py  pilha de escopos (programa, cada Bloco, cabeçalho de migrar), R1–R11,
+                          anota o tipo de cada expressão (campo .tipo).
+                          Concatenação: "a" + 1 + 2 => "a12" e 1 + 2 + "a" => "3a" (esquerda p/ direita).
+[x] ErroSemantico         "Erro semântico [linha 7]: variável 'peso' usada sem declaração (regra R1: declarar antes de usar)"
+                          (a mensagem inclui o número da regra: R1..R11)
+[x] zoolang/gerador_c.py  percorre a AST; parênteses mínimos a partir da árvore; rugir -> um printf;
+                          variáveis sem valor inicial recebem 0 / 0.0 / "" / false (evita lixo de memória);
+                          nomes que são palavras de C (int, main, printf...) viram nome_zoo.
+[x] zooc.py               pipeline completo; grava arq.c (padrão) ou -o; --tokens --ast --c --run
+                          (--run usa gcc do PATH ou a variável ZOOC_CC)
+[x] exemplos/saidas/      01/02 .c + .execucao.txt (02 com entrada 120); 03/04/05 .erro.txt
+[x] tests/                test_parser.py (29), test_semantico.py (24), test_gerador.py (13, ponta a ponta
+                          compila e executa o C) + test_lexer.py (36) = 102 testes, todos passando
+[x] rodar_testes.py       roda tudo e mostra a saída de cada caso; --salvar regrava exemplos/saidas/
+[x] README.md             estado das etapas, uso completo (zoo -> c -> gcc -> executar), erros, AST
+
+gcc: instalado em 15/10/2026 (WinLibs, gcc 16.2, via winget). python rodar_testes.py com gcc real:
+102 testes, 0 falhas, 0 pulados; os 5 exemplos com o resultado esperado.
+
+TEMA: os exemplos trocaram treino/academia (herança da BIRL) por zoológico: 01 = leão Simba;
+02 = bananas dos macacos; 03/04/05 = leoes / filhotes (posições dos erros iguais).
+
+[x] docs/Relatorio_Tecnico_ZooLang.docx — VERSÃO FINAL (editado direto no .docx, porque o
+    gerar_relatorio.js não estava nesta máquina; o .js antigo, se alguém tiver, está DESATUALIZADO
+    e não deve ser usado para regenerar, senão as mudanças abaixo se perdem):
+    - capa: Ijuí – RS / 2026; sem "versão parcial";
+    - tema de zoológico em todo o texto (1.1, Tabela 1, exemplos, D3, D6, tabelas de tokens e regras);
+    - seção 5 sem "proposta"; novas 5.5 (produções x métodos x nós da AST, exemplos de AST)
+      e 5.6 (erros sintáticos reais);
+    - seção 6 implementada; nova 6.4 (pilha de escopos, mensagens reais de R1–R11);
+    - NOVA seção 7 Geração de código C (tradução nó a nó, decisões, .zoo ao lado do .c, C do 02);
+    - 8 Arquitetura e uso; 9 Suíte com resultados reais (execução do 02, erros 03/04/05, 102 testes);
+    - 10 Revisão integradora (+ linha do tema, + tabela requisitos do enunciado x entrega);
+    - 11 IA: só Claude Code (extensão do VS Code) + ferramentas sem IA;
+    - 12 Conclusão e trabalhos futuros; tabelas renumeradas (21).
+    Ao abrir no Word, aceitar "atualizar campos" para o Sumário ser montado (ou F9 no sumário).
+    Não há Word/LibreOffice nesta máquina: o .docx foi validado (XSD), mas não visualizado.
+
+
 FALTA FAZER
 ===========
 
-MARCO 4 — Parser + AST + erros sintáticos
-------------------------------------------
-[ ] zoolang/ast.py: nós da AST (dataclasses), por exemplo:
-      Programa(imports, corpo), Importacao(lib), Declaracao(tipo, nome, const, expr),
-      Atribuicao(nome, expr), Leitura(nome), Escrita(expr), Se(ramos[(cond, bloco)], senao),
-      Enquanto(cond, bloco), Para(init, cond, passo, bloco), Fugir(),
-      BinOp(op, esq, dir), Unario(op, expr), Literal(tipo, valor), Var(nome), Bloco(instrucoes).
-    Cada nó guarda a linha (para as mensagens semânticas).
-[ ] zoolang/parser.py: descida recursiva seguindo a EBNF da seção 5.2 do relatório
-    (um método por não terminal: programa, instrucao, declaracao, ..., expressao, expr_aritmetica, termo, fator).
-[ ] ErroSintatico em erros.py: "Erro sintático [linha L, coluna C]: esperado <X>, encontrado '<lexema>'".
-[ ] Rejeitar as reservadas futuras com "recurso reservado, não suportado nesta versão".
-[ ] CLI: opção --ast (imprimir a árvore indentada), útil na demonstração.
-[ ] tests/test_parser.py: precedência (2+3*4 => Soma(2, Mult(3,4)); (2+3)*4), else-if encadeado,
-    migrar, erros sintáticos (04_erro_sintatico deve falhar: "esperado expressão, encontrado 'rugir'").
-[ ] Validar a gramática; se mudar, atualizar a seção 5 do relatório (e V/T).
+[ ] Abrir o .docx no Word e conferir o visual (sumário, tabelas, quebras de página).
+[ ] Fazer o commit/push de tudo (código novo, testes, exemplos/saidas, relatório) para o grupo.
 
-MARCO 5 — Semântica + geração de C + entrega
---------------------------------------------
-[ ] zoolang/semantico.py: tabela de símbolos (nome, tipo, const, linha) com pilha de escopos
-    (programa, cada Bloco, cabeçalho de migrar); anotar o tipo de cada expressão.
-    Regras R1–R11 (seção 6 do relatório): declarar antes de usar; sem duplicata no mesmo escopo;
-    compatibilidade (int->double ok; double->int, string<->número, bool<->número proibidos);
-    aritmética só numérica; concatenação só em rugir; relacionais -> vagalume; condição deve
-    ser vagalume; fossil exige inicialização e não pode ser alvo de atribuição/capturar;
-    fugir só em laço; capturar não aceita vagalume; gato só com math/stdlib/string/time.
-[ ] ErroSemantico: "Erro semântico [linha L]: variável 'peso' usada sem declaração (regra: ...)".
-    05_erro_semantico deve falhar com isso.
-[ ] zoolang/gerador_c.py: percorrer a AST (não fazer substituição textual). Mapeamento:
-      carneirinho->int (%d), camaleao->double (printf %g / scanf %lf),
-      cobra->char x[256] (inicialização/atribuição com strcpy; scanf "%255s"),
-      vagalume->bool (#include <stdbool.h>; imprimir x ? "vivo" : "morto"), fossil->const,
-      gato math -> #include <math.h>; sempre #include <stdio.h> (+ string.h se usar cobra).
-      rugir com concatenação -> um único printf com os especificadores de cada parte + "\n".
-      Parênteses: gerar a partir da árvore, respeitando a precedência.
-[ ] CLI: pipeline completo; gravar arq.c (opção -o); opcionalmente --run (gcc + executar).
-[ ] Gerar exemplos/saidas/01_valido_basico.c e 02_valido_completo.c (entregável 4), compilar
-    com gcc e conferir a execução (02 usa capturar: testar com entrada, ex.: echo 120 | ./a.exe).
-[ ] Salvar a saída de erro de 04 e 05 em exemplos/saidas/.
-[ ] tests/test_semantico.py, tests/test_gerador.py (ponta a ponta: compilar o .c gerado com gcc).
-[ ] Script para rodar toda a suíte (ex.: rodar_testes.py ou .bat) e mostrar a saída de cada caso.
-
-RELATÓRIO / README (fechamento)
--------------------------------
-[ ] Atualizar docs/fonte/gerar_relatorio.js e regenerar:
-    - seção 5: tirar o aviso de "proposta" depois de validar com o parser; explicar quais
-      produções reconhecem cada estrutura; exemplo de AST (árvore do 02 ou do exemplo 2+3*4);
-    - seção 6: marcar como implementada e colocar as mensagens reais;
-    - seção 7: tabela de módulos/estado; nova seção de geração de código com um .zoo ao lado do .c;
-    - seção 8: resultados reais dos 5 casos (incluindo os erros sintático e semântico);
-    - seção 10 (IA): o grupo completa com as ferramentas usadas;
-    - capa: cidade; remover "versão parcial".
-[ ] README: estado das etapas, exemplo de uso completo (zoo -> c -> gcc -> executar).
 
 APRESENTAÇÃO (Aula 18 — 15 pontos)
 ----------------------------------
@@ -109,11 +106,11 @@ APRESENTAÇÃO (Aula 18 — 15 pontos)
 
 NOTAS DE AMBIENTE
 -----------------
-- Python 3.13; gcc em C:\MinGW\bin; Node 24.
+- (máquina antiga) Python 3.13; gcc em C:\MinGW\bin; Node 24.
+- (máquina atual, 15/10/2026) Python 3.12; gcc 16.2 (WinLibs, instalado via winget).
 - O pacote npm "docx" NÃO está instalado no projeto (foi instalado só na pasta temporária
   da sessão). Para regenerar o relatório: npm install docx && node docs/fonte/gerar_relatorio.js
   (ou instalar numa pasta temporária e usar NODE_PATH, para não poluir o projeto).
 - Não há Word nem LibreOffice na máquina: dá para validar o .docx
   (validate.py da skill docx), mas não renderizar para ver o visual.
-- O projeto não é um repositório git (considerar git init).
 - Arquivos .zoo em UTF-8 com quebras de linha LF.

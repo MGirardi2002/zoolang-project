@@ -6,10 +6,10 @@
 gato math
 
 ENTRAR_NA_JAULA
-    fossil carneirinho META = 100
-    carneirinho carga
-    carneirinho serie = 1
-    camaleao volume = 0.0
+    fossil carneirinho ESTOQUE_IDEAL = 100
+    carneirinho bananas
+    carneirinho refeicao = 1
+    camaleao consumo = 0.0
     carneirinho resultado
 
     ~ precedência: 2 + (3 * 4) = 14 e (2 + 3) * 4 = 20 ~
@@ -18,31 +18,31 @@ ENTRAR_NA_JAULA
     resultado = (2 + 3) * 4
     rugir(resultado)
 
-    rugir("Qual a carga no supino?")
-    capturar(carga)
+    rugir("Quantas bananas chegaram para os macacos?")
+    capturar(bananas)
 
-    se_tem_bicho (carga >= META) {
-        rugir("BATEU A META! MONSTRO!")
-    } Se_for_outro_bixo (carga >= 50) {
-        rugir("Ta no caminho certo, vai subir o peso!")
+    se_tem_bicho (bananas >= ESTOQUE_IDEAL) {
+        rugir("BANANA PRA TODO MUNDO! OS MACACOS FIZERAM FESTA!")
+    } Se_for_outro_bixo (bananas >= 50) {
+        rugir("Da pro gasto, mas o gorila ficou de olho.")
     } nao_tem_bicho {
-        rugir("Carga de frango!")
+        rugir("Pouca banana! Os macacos entraram em greve!")
     }
 
-    contar_carneirinho (serie <= 3) {
-        volume = volume + carga * 1.5
-        rugir("Serie " + serie + " concluida!")
-        serie = serie + 1
+    contar_carneirinho (refeicao <= 3) {
+        consumo = consumo + bananas * 0.5
+        rugir("Refeicao " + refeicao + " dos macacos servida!")
+        refeicao = refeicao + 1
     }
 
     migrar (carneirinho i = 10; i > 0; i = i - 1) {
         se_tem_bicho (i == 5) {
-            rugir("Cansou! Foge do loop!")
+            rugir("O leao escapou! Todo mundo foge!")
             fugir
         }
         rugir(i)
     }
 
-    rugir("Volume total: " + volume)
-    rugir("TREINO FINALIZADO!")
+    rugir("Bananas consumidas: " + consumo)
+    rugir("ZOOLOGICO FECHADO! BOA NOITE, BICHOS!")
 SAIR_DA_JAULA

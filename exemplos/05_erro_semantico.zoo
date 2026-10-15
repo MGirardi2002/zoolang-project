@@ -3,7 +3,7 @@
 ~  pela análise semântica)                                ~
 
 ENTRAR_NA_JAULA
-    carneirinho carga = 100
-    peso = carga * 2
-    rugir(peso)
+    carneirinho leoes = 3
+    filhotes = leoes * 2
+    rugir(filhotes)
 SAIR_DA_JAULA

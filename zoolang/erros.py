@@ -33,3 +33,26 @@ class ErroLexico(ZooLangError):
     def __init__(self, mensagem, linha, coluna, lexema=None):
         self.lexema = lexema
         super().__init__(mensagem, linha, coluna)
+
+
+class ErroSintatico(ZooLangError):
+    """Sequência de tokens que não pode ser derivada pela gramática da ZooLang."""
+
+    categoria = "Erro sintático"
+
+    def __init__(self, mensagem, linha, coluna, lexema=None):
+        self.lexema = lexema
+        super().__init__(mensagem, linha, coluna)
+
+
+class ErroSemantico(ZooLangError):
+    """Programa sintaticamente correto que viola uma regra semântica (R1–R11).
+
+    Os nós da AST guardam só a linha, por isso a mensagem não traz coluna.
+    """
+
+    categoria = "Erro semântico"
+
+    def __init__(self, mensagem, linha, regra=None):
+        self.regra = regra
+        super().__init__(mensagem, linha)

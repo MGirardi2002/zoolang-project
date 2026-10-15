@@ -1,0 +1,16 @@
+Execução (entrada: '120'):
+14
+20
+Quantas bananas chegaram para os macacos?
+BANANA PRA TODO MUNDO! OS MACACOS FIZERAM FESTA!
+Refeicao 1 dos macacos servida!
+Refeicao 2 dos macacos servida!
+Refeicao 3 dos macacos servida!
+10
+9
+8
+7
+6
+O leao escapou! Todo mundo foge!
+Bananas consumidas: 180
+ZOOLOGICO FECHADO! BOA NOITE, BICHOS!
